@@ -9,7 +9,6 @@ import com.roomiemate.service.RoomService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,11 +19,14 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/rooms")
-@RequiredArgsConstructor
 @Tag(name = "Rooms", description = "Endpoints for creating and managing rooms and members")
 public class RoomController {
 
     private final RoomService roomService;
+
+    public RoomController(RoomService roomService) {
+        this.roomService = roomService;
+    }
 
     @PostMapping
     @Operation(summary = "Create a new room and send invitations to specified users")
