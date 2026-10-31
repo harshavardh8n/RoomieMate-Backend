@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: roomiemate-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_URL=jdbc:postgresql://postgres-db:5432/roomiemate
+      - DB_USERNAME=roomie
+      - DB_PASSWORD=roomiepassword
+      - JWT_SECRET=404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: roomiemate-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=roomiemate
+      - POSTGRES_USER=roomie
+      - POSTGRES_PASSWORD=roomiepassword
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U roomie -d roomiemate"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+
