@@ -11,7 +11,6 @@ import com.roomiemate.exception.ResourceNotFoundException;
 import com.roomiemate.repository.InvitationRepository;
 import com.roomiemate.repository.RoomRepository;
 import com.roomiemate.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,12 +19,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class RoomService {
 
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final InvitationRepository invitationRepository;
+
+    public RoomService(RoomRepository roomRepository, UserRepository userRepository, InvitationRepository invitationRepository) {
+        this.roomRepository = roomRepository;
+        this.userRepository = userRepository;
+        this.invitationRepository = invitationRepository;
+    }
 
     @Transactional
     public RoomResponse createRoom(User creator, CreateRoomRequest request) {

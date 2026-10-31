@@ -9,7 +9,6 @@ import com.roomiemate.service.InvitationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,11 +19,14 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/invitations")
-@RequiredArgsConstructor
 @Tag(name = "Invitations", description = "Endpoints for room invitations and responses")
 public class InvitationController {
 
     private final InvitationService invitationService;
+
+    public InvitationController(InvitationService invitationService) {
+        this.invitationService = invitationService;
+    }
 
     @PostMapping("/rooms/{roomId}")
     @Operation(summary = "Send an invitation to a user to join a room")
